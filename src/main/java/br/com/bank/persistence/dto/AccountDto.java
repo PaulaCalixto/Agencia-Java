@@ -5,25 +5,19 @@ import jakarta.validation.constraints.NotNull;
 
 public class AccountDto {
 
-    private Long id;
-
+    Long id;
     @NotNull
-    private AccountType tipoConta;
-
+    AccountType tipoConta;
     @NotNull
-    private Long userId;
-
+    Long userId;
     @NotNull
-    private String nome;
-
+    String nome;
     @NotNull
-    private Integer idade;
-
+    Integer idade;
     @NotNull
-    private String telefone;
-
+    String telefone;
     @NotNull
-    private String endereco;
+    String endereco;
 
     public AccountDto() {
     }

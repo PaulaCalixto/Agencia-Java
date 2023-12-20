@@ -1,11 +1,9 @@
 package br.com.bank.persistence.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -13,20 +11,20 @@ public class UserDto {
 
     @NotBlank(message = "Este campo não pode estar vazio")
     @Size(max = 100, message = "O nome deve ter no máximo 100 caracteres")
-    private String nome;
+    String nome;
 
-    @NotNull(message = "A idade não pode ser nula")
+    @NotBlank
     @Min(value = 0, message = "A idade deve ser maior ou igual a 0")
     @Max(value = 120, message = "A idade deve ser menor ou igual a 120")
-    private Integer idade;
+    Integer idade;
 
     @NotBlank(message = "Este campo não pode estar vazio")
-    private String telefone;
+    String telefone;
 
     @NotBlank(message = "Este campo não pode estar vazio")
-    private String endereco;
+    String endereco;
 
-    private List<AccountDto> contas;
+    List<AccountDto> contas;
 
     public UserDto() {
     }
@@ -43,12 +41,10 @@ public class UserDto {
         this.contas = contas;
     }
 
-    @Transactional
     public List<AccountDto> getContas() {
         return contas;
     }
 
-    @Transactional
     public void setContas(List<AccountDto> contas) {
         this.contas = contas;
     }

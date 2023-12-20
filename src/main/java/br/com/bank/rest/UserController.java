@@ -13,15 +13,21 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/api/v1/user")
+@Path("/api/v1/users")
 public class UserController {
 
     @Inject
     UserService userService;
 
     @POST
+    @Path("/add-user")
+    public Response createUser(@Valid UserDto userData) {
+        userService.createUser(userData);
+        return Response.status(Response.Status.OK).entity("Ok").build();
+    }
+
+    @POST
     @Path("/create-account")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response createAccount(@Valid AccountDto accountData) {
         userService.createAccount(accountData);
         return Response.status(Response.Status.CREATED).entity("Conta criada com sucesso").build();
@@ -29,23 +35,20 @@ public class UserController {
 
     @POST
     @Path("/deposit")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deposit(@Valid TransactionDto transactionData) {
-        userService.deposit(transactionData.accountId(), transactionData.amount());
+        userService.deposit(transactionData.getAccountId(), transactionData.getAmount());
         return Response.status(Response.Status.OK).entity("Depósito realizado com sucesso").build();
     }
 
     @POST
     @Path("/withdraw")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response withdraw(@Valid TransactionDto transactionData) {
-        userService.withdraw(transactionData.accountId(), transactionData.amount());
+        userService.withdraw(transactionData.getAccountId(), transactionData.getAmount());
         return Response.status(Response.Status.OK).entity("Saque realizado com sucesso").build();
     }
 
     @GET
     @Path("/list-accounts/{userId}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response listAccounts(@PathParam("userId") Long userId) {
         List<AccountDto> accounts = userService.listAccounts(userId);
         return Response.status(Response.Status.OK).entity(accounts).build();
@@ -53,7 +56,6 @@ public class UserController {
 
     @GET
     @Path("/account-details/{accountId}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response accountDetails(@PathParam("accountId") Long accountId) {
         AccountDto accountDetails = userService.getAccountDetails(accountId);
         return Response.status(Response.Status.OK).entity(accountDetails).build();
@@ -61,7 +63,6 @@ public class UserController {
 
     @GET
     @Path("/user-details/{userId}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response userDetails(@PathParam("userId") Long userId) {
         UserDto userDetails = userService.getUserDetails(userId);
         return Response.status(Response.Status.OK).entity(userDetails).build();

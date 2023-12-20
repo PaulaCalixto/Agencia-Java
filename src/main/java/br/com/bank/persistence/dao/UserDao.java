@@ -1,6 +1,7 @@
 package br.com.bank.persistence.dao;
 
 import br.com.bank.persistence.model.User;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -14,8 +15,9 @@ public class UserDao implements Dao<User> {
     @Inject
     EntityManager em;
 
-    public UserDao(EntityManager em) {
-        this.em = em;
+    @Override
+    public User get() {
+        return null;
     }
 
     @Override
@@ -40,7 +42,6 @@ public class UserDao implements Dao<User> {
                 .getResultList();
     }
 
-    @Override
     public Optional<User> get(Long id) {
         User user = em.find(User.class, id);
         return Optional.ofNullable(user);

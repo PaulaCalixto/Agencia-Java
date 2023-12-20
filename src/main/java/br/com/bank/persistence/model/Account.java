@@ -8,17 +8,17 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_conta")
-    public AccountType tipoConta;
-
-    private Double saldo;
+    AccountType tipoConta;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User usuario;
+    User usuario;
+
+    Double saldo;
 
     public Account() {
         this.usuario = null;
@@ -41,7 +41,7 @@ public class Account {
 
     public void depositar(Double valor) {
         if (tipoConta == AccountType.CONTA_POUPANCA) {
-            this.saldo += valor;
+            this.saldo += valor + 0.5;
         } else {
             throw new RuntimeException("Depósito permitido apenas para conta poupança.");
         }
@@ -59,7 +59,7 @@ public class Account {
         return usuario;
     }
 
-    public void setSaldo(double s) {
+    public void setSaldo(double saldo) {
     }
 
     public void setTipoConta(AccountType tipoConta) {

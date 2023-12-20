@@ -2,9 +2,11 @@ package br.com.bank.persistence.dao;
 
 import br.com.bank.persistence.model.Account;
 import br.com.bank.persistence.model.AccountType;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +16,9 @@ public class AccountDao implements Dao<Account> {
     @Inject
     EntityManager em;
 
-    public AccountDao(EntityManager em) {
-        this.em = em;
+    @Override
+    public Account get() {
+        return null;
     }
 
     @Override
@@ -40,16 +43,15 @@ public class AccountDao implements Dao<Account> {
                 .getResultList();
     }
 
-    @Override
+    public List<Account> getByUserIdAndType(Long userId, AccountType accountType) {
+        return em.createQuery("SELECT a FROM Account a WHERE a.user.id = :userId AND a.accountType = :accountType", Account.class)
+                .setParameter("userId", userId)
+                .setParameter("accountType", accountType)
+                .getResultList();
+    }
+
     public Optional<Account> get(Long id) {
         Account account = em.find(Account.class, id);
         return Optional.ofNullable(account);
-    }
-
-    public List<Account> getByUserIdAndType(Long userId, AccountType tipoConta) {
-        return em.createQuery("SELECT a FROM Account a WHERE a.usuario.id = :userId AND a.tipoConta = :tipoConta", Account.class)
-                .setParameter("userId", userId)
-                .setParameter("tipoConta", tipoConta)
-                .getResultList();
     }
 }

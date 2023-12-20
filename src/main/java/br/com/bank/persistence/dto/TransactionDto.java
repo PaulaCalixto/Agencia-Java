@@ -11,13 +11,11 @@ public record TransactionDto(
         this.amount = amount;
     }
 
-    @Override
-    public Long accountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    @Override
-    public Double amount() {
+    public Double getAmount() {
         return amount;
     }
 }

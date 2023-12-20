@@ -6,15 +6,16 @@ import br.com.bank.persistence.dto.AccountDto;
 import br.com.bank.persistence.dto.UserDto;
 import br.com.bank.persistence.model.Account;
 import br.com.bank.persistence.model.User;
+import jakarta.transaction.Transactional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
+@Transactional
 public class UserService {
 
     @Inject
@@ -23,11 +24,18 @@ public class UserService {
     @Inject
     AccountService accountService;
 
+    public void createUser(UserDto userData) {
+        User newUser = new User();
+        newUser.setNome(userData.getNome());
+        newUser.setIdade(userData.getIdade());
+        newUser.setTelefone(userData.getTelefone());
+        newUser.setEndereco(userData.getEndereco());
+        userDao.save(newUser);
+    }
+
     public void createAccount(AccountDto accountData) {
         Optional<User> optionalUser = userDao.get(accountData.getUserId());
-
         User user = optionalUser.orElseGet(() -> createUser(accountData));
-
         createAccountForUser(user, accountData);
     }
 
@@ -52,7 +60,6 @@ public class UserService {
         accountService.deposit(accountId, valor);
     }
 
-    @Transactional
     public void withdraw(Long accountId, Double valor) {
         accountService.withdraw(accountId, valor);
     }
